@@ -1,0 +1,544 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>سيف باي — ملف القضية</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Amiri:wght@400;700&family=Cairo:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+<style>
+:root{
+  --ink:#10161f;
+  --ink-2:#161f2c;
+  --paper:#efe7d6;
+  --paper-2:#f7f1e4;
+  --paper-line:#d9cdae;
+  --brass:#b98423;
+  --brass-2:#8c631a;
+  --safe:#2f6f4f;
+  --safe-ink:#dff0e6;
+  --warn:#b98423;
+  --warn-ink:#f6ecd6;
+  --danger:#a3312a;
+  --danger-ink:#f6dcd9;
+  --text-dark:#241c10;
+  --text-mute:#6b5f47;
+  --border-radius:2px;
+}
+*{box-sizing:border-box;}
+html,body{margin:0;padding:0;}
+body{
+  background:
+    radial-gradient(circle at 15% 0%, #1b2432 0%, transparent 45%),
+    radial-gradient(circle at 85% 100%, #1b2432 0%, transparent 45%),
+    var(--ink);
+  color:var(--paper);
+  font-family:'Cairo',sans-serif;
+  min-height:100vh;
+  padding:28px 20px 60px;
+}
+.mono{font-family:'JetBrains Mono',monospace;}
+.serif{font-family:'Amiri',serif;}
+
+/* ===== Header ===== */
+.case-header{
+  max-width:1280px;margin:0 auto 26px;
+  display:flex;align-items:center;justify-content:space-between;
+  border-bottom:1px solid #2b374a;
+  padding-bottom:18px;
+  flex-wrap:wrap;
+  gap:14px;
+}
+.case-header .brand{display:flex;align-items:center;gap:14px;}
+.seal{
+  width:52px;height:52px;border-radius:50%;
+  border:2px solid var(--brass);
+  display:flex;align-items:center;justify-content:center;
+  font-family:'Amiri',serif;font-weight:700;font-size:22px;color:var(--brass);
+  position:relative;
+  background:radial-gradient(circle, rgba(185,132,35,0.08), transparent 70%);
+}
+.seal::after{
+  content:'';position:absolute;inset:-6px;border-radius:50%;
+  border:1px dashed rgba(185,132,35,.4);
+}
+.brand h1{
+  margin:0;font-family:'Amiri',serif;font-weight:700;font-size:26px;letter-spacing:.5px;color:var(--paper-2);
+}
+.brand p{margin:2px 0 0;font-size:12.5px;color:#8a97ab;letter-spacing:.3px;}
+.case-id{
+  font-family:'JetBrains Mono',monospace;font-size:12px;color:#8a97ab;
+  text-align:left;
+  display:flex;flex-direction:column;gap:4px;
+}
+.case-id .badge{
+  display:inline-flex;align-items:center;gap:6px;
+  background:#152234;border:1px solid #2b3d52;color:#6fd6a0;
+  padding:5px 10px;border-radius:20px;font-size:11.5px;
+}
+.case-id .badge::before{content:'●';color:#3ddc84;font-size:9px;}
+
+/* ===== Stat strip ===== */
+.stat-strip{
+  max-width:1280px;margin:0 auto 24px;
+  display:grid;grid-template-columns:repeat(4,1fr);gap:14px;
+}
+.stat-card{
+  background:var(--ink-2);border:1px solid #263248;
+  padding:16px 18px;position:relative;overflow:hidden;
+}
+.stat-card::before{
+  content:attr(data-tag);position:absolute;top:8px;left:10px;
+  font-family:'JetBrains Mono',monospace;font-size:9px;letter-spacing:2px;color:#3b4a63;
+}
+.stat-card .val{font-family:'JetBrains Mono',monospace;font-size:30px;font-weight:700;color:var(--paper-2);margin-top:14px;}
+.stat-card .lbl{font-size:12.5px;color:#8a97ab;margin-top:2px;}
+.stat-card.safe .val{color:#6fd6a0;}
+.stat-card.warn .val{color:#e0b24d;}
+.stat-card.danger .val{color:#e07a72;}
+
+/* ===== Main grid: dossier spread ===== */
+.spread{
+  max-width:1280px;margin:0 auto;
+  display:grid;grid-template-columns:1.1fr 0.9fr;gap:20px;
+}
+@media (max-width:920px){ .spread{grid-template-columns:1fr;} .stat-strip{grid-template-columns:repeat(2,1fr);} }
+
+.folder{
+  background:var(--paper);
+  color:var(--text-dark);
+  position:relative;
+  box-shadow:0 18px 40px -18px rgba(0,0,0,.55);
+  border:1px solid var(--paper-line);
+}
+.folder-tab{
+  position:absolute;top:-14px;right:24px;
+  background:var(--brass);color:var(--paper-2);
+  font-family:'JetBrains Mono',monospace;font-size:10.5px;letter-spacing:1.5px;
+  padding:4px 12px;
+}
+.folder-inner{padding:30px 26px 26px;}
+.folder h2{
+  font-family:'Amiri',serif;font-size:22px;margin:0 0 2px;color:var(--text-dark);
+}
+.folder .sub{font-size:12.5px;color:var(--text-mute);margin-bottom:20px;}
+
+.field-grid{display:grid;grid-template-columns:1fr 1fr;gap:14px 16px;}
+.field{display:flex;flex-direction:column;gap:6px;}
+.field.full{grid-column:1/-1;}
+.field label{
+  font-size:11.5px;color:var(--text-mute);letter-spacing:.3px;font-weight:600;
+}
+.field input, .field select{
+  border:none;border-bottom:2px solid var(--paper-line);
+  background:transparent;
+  padding:8px 2px;font-family:'JetBrains Mono',monospace;font-size:14.5px;color:var(--text-dark);
+  outline:none;
+}
+.field input:focus, .field select:focus{border-bottom-color:var(--brass);}
+
+.btn-stamp{
+  margin-top:22px;width:100%;
+  background:var(--text-dark);color:var(--paper-2);
+  border:none;padding:14px;font-family:'Cairo',sans-serif;font-weight:700;font-size:15px;
+  letter-spacing:.5px;cursor:pointer;
+  display:flex;align-items:center;justify-content:center;gap:10px;
+  transition:transform .15s ease, background .2s ease;
+}
+.btn-stamp:hover{background:#3a2f1c;}
+.btn-stamp:active{transform:scale(.98);}
+
+/* ===== Verdict panel ===== */
+.verdict-panel{
+  background:var(--ink-2);border:1px solid #263248;padding:26px;
+  display:flex;flex-direction:column;
+  min-height:100%;
+}
+.verdict-panel h2{
+  font-family:'Amiri',serif;font-size:20px;margin:0 0 4px;color:var(--paper-2);
+}
+.verdict-panel .sub{font-size:12px;color:#8a97ab;margin-bottom:22px;}
+
+.stamp-zone{
+  border:1.5px dashed #2b3d52;
+  padding:26px;min-height:190px;
+  display:flex;align-items:center;justify-content:center;
+  position:relative;
+}
+.stamp{
+  font-family:'Amiri',serif;font-weight:700;
+  border:4px solid currentColor;
+  border-radius:6px;
+  padding:14px 30px;
+  font-size:26px;letter-spacing:3px;
+  transform:rotate(-6deg);
+  position:relative;
+  animation:stampIn .35s cubic-bezier(.2,1.4,.4,1) both;
+}
+.stamp::after{
+  content:'';position:absolute;inset:5px;border:1px solid currentColor;border-radius:3px;opacity:.5;
+}
+.stamp.safe{color:#6fd6a0;}
+.stamp.warn{color:#e0b24d;}
+.stamp.danger{color:#e07a72;}
+@keyframes stampIn{
+  0%{opacity:0;transform:rotate(-6deg) scale(2.6);}
+  60%{opacity:1;}
+  100%{opacity:1;transform:rotate(-6deg) scale(1);}
+}
+.stamp-placeholder{color:#3b4a63;font-size:13px;text-align:center;line-height:1.9;}
+
+.score-row{display:flex;align-items:center;justify-content:space-between;margin-top:20px;}
+.score-num{font-family:'JetBrains Mono',monospace;font-size:34px;font-weight:700;color:var(--paper-2);}
+.score-bar{
+  flex:1;height:8px;margin-right:16px;background:#1c2839;position:relative;overflow:hidden;
+}
+.score-bar i{
+  position:absolute;inset:0;width:0%;
+  background:linear-gradient(90deg,#2f6f4f,#b98423 60%,#a3312a);
+  transition:width .5s ease;
+}
+
+.reasons{margin-top:22px;display:flex;flex-direction:column;gap:8px;}
+.reasons .rtitle{font-size:11px;letter-spacing:2px;color:#5a687f;margin-bottom:6px;}
+.reason-item{
+  display:flex;align-items:center;justify-content:space-between;
+  background:#141d2c;border:1px solid #22304480;
+  padding:9px 12px;font-size:13px;color:#c7d0dd;
+}
+.reason-item .pts{font-family:'JetBrains Mono',monospace;color:#e0b24d;font-size:12px;}
+.reasons-empty{font-size:12.5px;color:#5a687f;}
+
+/* ===== Profile & history section ===== */
+.lower{max-width:1280px;margin:22px auto 0;display:grid;grid-template-columns:1fr 1fr;gap:20px;}
+@media (max-width:920px){ .lower{grid-template-columns:1fr;} }
+
+.ledger-title{
+  font-family:'Amiri',serif;font-size:19px;color:var(--paper-2);margin:0 0 14px;
+  display:flex;align-items:center;gap:10px;
+}
+.ledger-title::before{content:'';width:8px;height:8px;background:var(--brass);border-radius:50%;}
+
+.profile-card{background:var(--ink-2);border:1px solid #263248;padding:24px;}
+.profile-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px 16px;margin-bottom:16px;}
+.profile-field label{
+  display:block;font-size:11px;color:#6f7d94;margin-bottom:6px;letter-spacing:.3px;
+}
+.profile-field input{
+  width:100%;background:#0f1620;border:1px solid #263248;
+  color:var(--paper-2);padding:9px 10px;font-family:'JetBrains Mono',monospace;font-size:13.5px;outline:none;
+}
+.profile-field input:focus{border-color:var(--brass);}
+.tags{display:flex;flex-wrap:wrap;gap:8px;margin-top:4px;}
+.tag{
+  background:#1a2536;border:1px solid #2b3d52;color:#a9b6c9;
+  font-size:12px;padding:5px 12px;border-radius:14px;cursor:pointer;user-select:none;
+}
+.tag.active{background:#25422f;border-color:#3a6a4a;color:#8fe3ac;}
+.btn-save{
+  margin-top:16px;background:transparent;border:1px solid var(--brass);color:var(--brass);
+  padding:10px 16px;font-family:'Cairo',sans-serif;font-weight:700;font-size:13px;cursor:pointer;
+}
+.btn-save:hover{background:rgba(185,132,35,.1);}
+
+.history-card{background:var(--ink-2);border:1px solid #263248;padding:24px;}
+.hist-table{width:100%;border-collapse:collapse;font-size:13px;}
+.hist-table thead th{
+  text-align:right;font-size:10.5px;letter-spacing:1.5px;color:#5a687f;
+  font-weight:600;padding-bottom:10px;border-bottom:1px solid #263248;
+}
+.hist-table td{
+  padding:10px 4px;border-bottom:1px solid #1c2839;color:#c7d0dd;
+  font-family:'JetBrains Mono',monospace;font-size:12.5px;
+}
+.hist-table tr:last-child td{border-bottom:none;}
+.pill{padding:3px 10px;border-radius:12px;font-size:11px;font-family:'Cairo',sans-serif;font-weight:700;}
+.pill.safe{background:#1c3226;color:#6fd6a0;}
+.pill.warn{background:#3a2f14;color:#e0b24d;}
+.pill.danger{background:#3a1c19;color:#e07a72;}
+.empty-hist{color:#5a687f;font-size:12.5px;padding:20px 0;text-align:center;}
+</style>
+</head>
+<body>
+
+<header class="case-header">
+  <div class="brand">
+    <div class="seal">SP</div>
+    <div>
+      <h1>سيف باي — نظام كشف الاحتيال</h1>
+      <p>تقييم خطورة العمليات المالية بناءً على سلوك العميل السابق</p>
+    </div>
+  </div>
+  <div class="case-id">
+    <span class="badge">متصل بمحرك القواعد</span>
+    <span>ملف رقم: <span id="caseNo" class="mono"></span></span>
+  </div>
+</header>
+
+<section class="stat-strip">
+  <div class="stat-card" data-tag="اليوم"><div class="val" id="statTotal">0</div><div class="lbl">عمليات اليوم</div></div>
+  <div class="stat-card safe" data-tag="مقبول"><div class="val" id="statApproved">0</div><div class="lbl">عمليات مقبولة</div></div>
+  <div class="stat-card warn" data-tag="تحقق"><div class="val" id="statVerify">0</div><div class="lbl">تحتاج تحقق</div></div>
+  <div class="stat-card danger" data-tag="متوسط"><div class="val" id="statAvg">0%</div><div class="lbl">متوسط الخطورة</div></div>
+</section>
+
+<section class="spread">
+
+  <div class="folder">
+    <div class="folder-tab">عملية جديدة</div>
+    <div class="folder-inner">
+      <h2>تحليل عملية دفع</h2>
+      <div class="sub">أدخل بيانات العملية ليقارنها المحرك بسلوك العميل المعتاد</div>
+
+      <div class="field-grid">
+        <div class="field"><label>المبلغ (ر.س)</label><input type="number" id="txAmount" value="100"></div>
+        <div class="field"><label>المتجر</label><input type="text" id="txMerchant" value="LuxeWatch Vault"></div>
+
+        <div class="field"><label>الفئة</label><input type="text" id="txCategory" value="ساعات فاخرة"></div>
+        <div class="field"><label>الدولة</label><input type="text" id="txCountry" value="الولايات المتحدة"></div>
+
+        <div class="field"><label>المدينة</label><input type="text" id="txCity" value="نيويورك"></div>
+        <div class="field">
+          <label>القناة</label>
+          <select id="txChannel">
+            <option value="online">أونلاين</option>
+            <option value="instore">داخل المتجر</option>
+          </select>
+        </div>
+
+        <div class="field"><label>الجهاز</label><input type="text" id="txDevice" value="Windows Laptop"></div>
+        <div class="field"><label>الوقت</label><input type="time" id="txTime" value="03:45"></div>
+
+        <div class="field full">
+          <label>هل المتجر معروف للعميل من قبل؟</label>
+          <select id="txKnownMerchant">
+            <option value="unknown">غير معروف إطلاقًا</option>
+            <option value="unusual">تعامل نادر معه</option>
+            <option value="known">متجر معتاد</option>
+          </select>
+        </div>
+      </div>
+
+      <button class="btn-stamp" onclick="analyzeTransaction()">✒️ تحليل العملية</button>
+    </div>
+  </div>
+
+  <div class="verdict-panel">
+    <h2>نتيجة التحليل</h2>
+    <div class="sub">القرار الصادر من محرك القواعد السلوكية</div>
+
+    <div class="stamp-zone" id="stampZone">
+      <div class="stamp-placeholder">لم يتم تحليل أي عملية بعد<br>اضغط «تحليل العملية» لعرض القرار</div>
+    </div>
+
+    <div class="score-row">
+      <div class="score-num" id="scoreNum">—</div>
+      <div class="score-bar"><i id="scoreBarFill"></i></div>
+    </div>
+
+    <div class="reasons">
+      <div class="rtitle">أسباب التقييم</div>
+      <div id="reasonsList"><div class="reasons-empty">لا توجد أسباب بعد</div></div>
+    </div>
+  </div>
+
+</section>
+
+<section class="lower">
+  <div class="profile-card">
+    <h3 class="ledger-title">الملف الشخصي للعميل</h3>
+    <div class="profile-grid">
+      <div class="profile-field"><label>الاسم</label><input id="pName" value="زياد أبو حسين"></div>
+      <div class="profile-field"><label>الدولة</label><input id="pCountry" value="السعودية"></div>
+      <div class="profile-field"><label>المدينة</label><input id="pCity" value="الرياض"></div>
+      <div class="profile-field"><label>الجهاز المعتاد</label><input id="pDevice" value="iPhone 15 Pro"></div>
+      <div class="profile-field"><label>متوسط قيمة العملية</label><input type="number" id="pAvgAmount" value="120"></div>
+      <div class="profile-field"><label>أعلى عملية سابقة</label><input type="number" id="pMaxAmount" value="500"></div>
+      <div class="profile-field"><label>بداية أوقات التسوق</label><input type="time" id="pHourStart" value="09:00"></div>
+      <div class="profile-field"><label>نهاية أوقات التسوق</label><input type="time" id="pHourEnd" value="22:00"></div>
+    </div>
+    <label style="display:block;font-size:11px;color:#6f7d94;margin-bottom:8px;">الفئات المعتادة (اضغط للتفعيل)</label>
+    <div class="tags" id="catTags">
+      <span class="tag active" data-cat="بقالة">بقالة</span>
+      <span class="tag active" data-cat="مطاعم">مطاعم</span>
+      <span class="tag active" data-cat="محطات وقود">محطات وقود</span>
+      <span class="tag active" data-cat="إلكترونيات">إلكترونيات</span>
+      <span class="tag" data-cat="ساعات فاخرة">ساعات فاخرة</span>
+      <span class="tag" data-cat="سفر">سفر</span>
+      <span class="tag" data-cat="مجوهرات">مجوهرات</span>
+    </div>
+    <button class="btn-save" onclick="saveProfile()">💾 حفظ الملف الشخصي</button>
+  </div>
+
+  <div class="history-card">
+    <h3 class="ledger-title">سجل العمليات</h3>
+    <table class="hist-table">
+      <thead>
+        <tr><th>المتجر</th><th>الفئة</th><th>المبلغ</th><th>الخطورة</th><th>القرار</th></tr>
+      </thead>
+      <tbody id="histBody"></tbody>
+    </table>
+    <div class="empty-hist" id="emptyHist">لا توجد عمليات محللة بعد</div>
+  </div>
+</section>
+
+<script>
+let profile = {
+  name: "زياد أبو حسين", country: "السعودية", city: "الرياض", device: "iPhone 15 Pro",
+  avgAmount: 120, maxAmount: 500, hourStart: "09:00", hourEnd: "22:00",
+  categories: ["بقالة","مطاعم","محطات وقود","إلكترونيات"]
+};
+let history = [];
+let stats = { total: 0, approved: 0, verify: 0, blocked: 0, scoreSum: 0 };
+
+document.getElementById('caseNo').textContent = 'SP-' + Math.floor(100000 + Math.random()*899999);
+
+document.getElementById('catTags').addEventListener('click', (e)=>{
+  if(e.target.classList.contains('tag')){ e.target.classList.toggle('active'); }
+});
+
+function saveProfile(){
+  profile.name = document.getElementById('pName').value;
+  profile.country = document.getElementById('pCountry').value;
+  profile.city = document.getElementById('pCity').value;
+  profile.device = document.getElementById('pDevice').value;
+  profile.avgAmount = parseFloat(document.getElementById('pAvgAmount').value) || 0;
+  profile.maxAmount = parseFloat(document.getElementById('pMaxAmount').value) || 0;
+  profile.hourStart = document.getElementById('pHourStart').value;
+  profile.hourEnd = document.getElementById('pHourEnd').value;
+  profile.categories = Array.from(document.querySelectorAll('#catTags .tag.active')).map(t=>t.dataset.cat);
+  const btn = document.querySelector('.btn-save');
+  const old = btn.textContent;
+  btn.textContent = '✔ تم الحفظ';
+  setTimeout(()=>{ btn.textContent = old; }, 1400);
+}
+
+function timeToMinutes(t){
+  if(!t) return null;
+  const [h,m] = t.split(':').map(Number);
+  return h*60+m;
+}
+
+function withinHours(t, start, end){
+  const tm = timeToMinutes(t), sm = timeToMinutes(start), em = timeToMinutes(end);
+  if(tm===null || sm===null || em===null) return true;
+  if(sm <= em) return tm >= sm && tm <= em;
+  return tm >= sm || tm <= em; // overnight window
+}
+
+function analyzeTransaction(){
+  const amount = parseFloat(document.getElementById('txAmount').value) || 0;
+  const merchant = document.getElementById('txMerchant').value.trim() || 'غير محدد';
+  const category = document.getElementById('txCategory').value.trim();
+  const country = document.getElementById('txCountry').value.trim();
+  const city = document.getElementById('txCity').value.trim();
+  const channel = document.getElementById('txChannel').value;
+  const device = document.getElementById('txDevice').value.trim();
+  const time = document.getElementById('txTime').value;
+  const knownMerchant = document.getElementById('txKnownMerchant').value;
+
+  let score = 0;
+  const reasons = [];
+
+  if(country && profile.country && country !== profile.country){
+    score += 30; reasons.push(['دولة مختلفة عن دولة العميل المعتادة', 30]);
+  } else if(city && profile.city && city !== profile.city){
+    score += 12; reasons.push(['مدينة مختلفة عن مدينة العميل المعتادة', 12]);
+  }
+
+  if(category && profile.categories.length && !profile.categories.includes(category)){
+    score += 13; reasons.push(['فئة منتج لا يستهلكها العميل عادة', 13]);
+  }
+
+  if(knownMerchant === 'unknown'){
+    score += 30; reasons.push(['متجر غير معروف للعميل إطلاقًا', 30]);
+  } else if(knownMerchant === 'unusual'){
+    score += 15; reasons.push(['متجر غير معتاد للعميل', 15]);
+  }
+
+  if(profile.maxAmount && amount > profile.maxAmount){
+    score += 35; reasons.push(['المبلغ أعلى من الحد الأقصى المعتاد للعميل', 35]);
+  }
+
+  if(!withinHours(time, profile.hourStart, profile.hourEnd)){
+    score += 8; reasons.push(['وقت الشراء خارج أوقات التسوق المعتادة', 8]);
+  }
+
+  if(device && profile.device && device !== profile.device){
+    score += 10; reasons.push(['جهاز غير معروف لدى العميل', 10]);
+  }
+
+  if(channel === 'online' && knownMerchant !== 'known'){
+    score += 8; reasons.push(['شراء أونلاين من متجر غير موثوق مسبقًا', 8]);
+  }
+
+  score = Math.min(score, 100);
+
+  let verdict = 'safe', verdictLabel = 'مقبولة';
+  if(score >= 70){ verdict = 'danger'; verdictLabel = 'محظورة'; }
+  else if(score >= 30){ verdict = 'warn'; verdictLabel = 'تحتاج تحقق'; }
+
+  renderVerdict(score, verdict, verdictLabel, reasons);
+  pushHistory(merchant, category, amount, score, verdict, verdictLabel);
+  updateStats(verdict, score);
+}
+
+function renderVerdict(score, verdict, label, reasons){
+  const zone = document.getElementById('stampZone');
+  zone.innerHTML = `<div class="stamp ${verdict}">${label}</div>`;
+
+  document.getElementById('scoreNum').textContent = score + '%';
+  document.getElementById('scoreNum').style.color =
+    verdict === 'safe' ? '#6fd6a0' : verdict === 'warn' ? '#e0b24d' : '#e07a72';
+  document.getElementById('scoreBarFill').style.width = score + '%';
+
+  const list = document.getElementById('reasonsList');
+  if(reasons.length === 0){
+    list.innerHTML = '<div class="reasons-empty">لا توجد مؤشرات خطورة — العملية تطابق سلوك العميل المعتاد</div>';
+  } else {
+    list.innerHTML = reasons.map(r =>
+      `<div class="reason-item"><span>⚠ ${r[0]}</span><span class="pts">+${r[1]}</span></div>`
+    ).join('');
+  }
+}
+
+function pushHistory(merchant, category, amount, score, verdict, label){
+  history.unshift({merchant, category, amount, score, verdict, label});
+  history = history.slice(0, 8);
+  renderHistory();
+}
+
+function renderHistory(){
+  const body = document.getElementById('histBody');
+  const empty = document.getElementById('emptyHist');
+  if(history.length === 0){
+    body.innerHTML = ''; empty.style.display = 'block'; return;
+  }
+  empty.style.display = 'none';
+  body.innerHTML = history.map(h => `
+    <tr>
+      <td>${h.merchant}</td>
+      <td>${h.category || '—'}</td>
+      <td>${h.amount} ر.س</td>
+      <td>${h.score}%</td>
+      <td><span class="pill ${h.verdict}">${h.label}</span></td>
+    </tr>
+  `).join('');
+}
+
+function updateStats(verdict, score){
+  stats.total++;
+  stats.scoreSum += score;
+  if(verdict === 'safe') stats.approved++;
+  else if(verdict === 'warn') stats.verify++;
+  else stats.blocked++;
+
+  document.getElementById('statTotal').textContent = stats.total;
+  document.getElementById('statApproved').textContent = stats.approved;
+  document.getElementById('statVerify').textContent = stats.verify;
+  document.getElementById('statAvg').textContent = Math.round(stats.scoreSum / stats.total) + '%';
+}
+</script>
+</body>
+</html>
